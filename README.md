@@ -53,15 +53,15 @@ Let's start off with the backend.
 
 To create a Back4app app, first navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps), and click "Build new app".
 
-![Back4app Build New App](https://i.ibb.co/DbWrJ9y/back4app-build-new-app.png)
+![Back4app Build New App](https://i.ibb.co/FDYy5P0/back4app-create-app.png)
 
 Next, select "Backend as a Service" since we're building a backend.
 
-![Back4app Backend as a Service](https://i.ibb.co/MVHby8X/back4app-backend-as-a-service.png)
+![Back4app Backend as a Service](https://i.ibb.co/ssDnZDY/back4app-backend-as-a-service.png)
 
 Name your application, select "PostgreSQL" as the database, and click "Create".
 
-![Back4app App Configuration](https://i.ibb.co/c8cys2y/back4app-app-configuration.png)
+![Back4app App Configuration](https://i.ibb.co/DDZm3Xx/back4app-app-configuration.png)
 
 > At the moment there's not much of a difference between the two database types from the developer's point of view. Parse SDK can be used for both of them, and the same methods can be leveraged.
 
@@ -69,7 +69,7 @@ Back4app will take a little while to prepare everything required for your applic
 
 As soon as your app is ready, you'll be redirected to your real-time database view.
 
-![Back4app Database View](https://i.ibb.co/NNcrbRx/back4app-database-view.png)
+![Back4app Database View](https://i.ibb.co/LxfnQPC/back4app-database-view.png)
 
 #### Database Architecture
 
@@ -79,7 +79,7 @@ Since our app is fairly simple, we'll only need one class. Let's call it `Expens
 
 To create a new database class click on the "Create a class" button, name it `Expense`, and enable "Public Read and Write".
 
-![Back4app Create New Class](https://i.ibb.co/JdBTz5L/back4app-create-database-class.png)
+![Back4app Create New Class](https://i.ibb.co/qmxGgj4/back4app-create-database-class.png)
 
 > Enabling "Public Read and Write" is bad practice, since it allows anyone to perform CRUD operations on your classes. Security is out of scope of this article, but it might be a good idea to review [Parse Server Security](https://blog.back4app.com/parse-server-security/).
 
@@ -117,7 +117,7 @@ Next, add the following additional fields to the `Expense` class:
 
 After that populate the database with some sample data. Create a few items by providing the name, description, and prices. Alternatively, you can import this [data dump](https://github.com/duplxey/back4app-postgres/blob/master/export/Expense.json).
 
-![Back4app Database Populated](https://i.ibb.co/qpfpFR3/back4app-test-data.png)
+![Back4app Database Populated](https://i.ibb.co/qCJJzLX/back4app-populate-database.png)
 
 The test data will later allow us to test the backend and frontend.
 
@@ -324,7 +324,7 @@ Finally, paste the view code into the files accordingly:
 
 Rerun the development server and visit [http://localhost:3000](http://localhost:3000) in your browser. You should see something similar to this:
 
-![Back4app App Postgress](https://i.ibb.co/C09Ydkz/back4app-postgress-app.png)
+![Back4app App Postgress](https://i.ibb.co/hYmfbcY/back4app-postgress-app.png)
 
 ---
 ---
@@ -373,13 +373,13 @@ export default function RootLayout({ children }) {
 }
 ```
 
-![Back4app API Keys](https://i.ibb.co/nnk4Gbs/back4app-api-keys.png)
+![Back4app API Keys](https://i.ibb.co/vZ8LzCs/back4app-api-keys.png)
 
 Create *.env.local* file in the project root:
 
 ```dotenv
-NEXT_PUBLIC_PARSE_APPLICATION_ID=7BzIPmHLuJO79TKK4QASWTQUhstNnIQbtDmrLAX3
-NEXT_PUBLIC_PARSE_JAVASCRIPT_KEY=has7Kpxy3hhERCGs7BD6mHCdqTMIyrPpNTi2BHjv
+NEXT_PUBLIC_PARSE_APPLICATION_ID=<your_parse_application_id>
+NEXT_PUBLIC_PARSE_JAVASCRIPT_KEY=<your_parse_javascript_key>
 ```
 
 Variables prefixed with `NEXT_PUBLIC_` will be accessible by the client.
@@ -387,16 +387,15 @@ Variables prefixed with `NEXT_PUBLIC_` will be accessible by the client.
 Slightly modify the views:
 
 ```jsx
-// ...
+// src/app/page.js
 
 export default function Page() {
 
-  const router = useRouter();
+  // ...
+    
   const parse = useContext(ParseContext);
 
-  // ...
-
-    const fetchExpenses = () => {
+  const fetchExpenses = () => {
     const query = new parse.Query("Expense");
     query.find().then((fetchedExpenses) => {
       const expenses = fetchedExpenses.map(expense => ({
@@ -422,34 +421,20 @@ export default function Page() {
     });
   }
 
-  useEffect(() => {
-    fetchExpenses();
-    fetchStatistics();
-  }, []);
-
-  return (
-    // ...
-  );
+  // ...
 }
 
 ```
 
-Don't forget about the imports:
 
 ```jsx
-import {useContext} from "react";
-import ParseContext from "@/app/context/parseContext";
-```
-
-```jsx
-// ...
+// src/app/add/page.js
 
 export default function Page() {
 
-  const router = useRouter();
-  const parse = useContext(ParseContext);
-  
   // ...
+    
+  const parse = useContext(ParseContext);
 
   const onAddClick = () => {
     const Expense = parse.Object.extend("Expense");
@@ -471,23 +456,20 @@ export default function Page() {
   const onCancelClick = () => {
     router.push("/");
   }
-
-  return (
-      // ...
-  );
+  
+  // ...
 }
 
 ```
 
 ```jsx
-// ...
+// src/app/delete/[objectId]/page.js
 
 export default function Page() {
 
-  const router = useRouter();
-  const parse = useContext(ParseContext);
-  
   // ...
+    
+  const parse = useContext(ParseContext);
 
   const onDeleteClick = () => {
     const Expense = parse.Object.extend("Expense");
@@ -506,12 +488,21 @@ export default function Page() {
   const onCancelClick = () => {
     router.push("/");
   }
-
-  return (
-    // ...
-  );
+  
+  // ...
 }
 ```
+
+Don't forget about the imports:
+
+```jsx
+import {useContext} from "react";
+import ParseContext from "@/app/context/parseContext";
+```
+
+Great, that's it.
+
+Your frontend is now connected to the backend. If you visit the app in your browser you should see that the data gets loaded correctly from the backend. All the changes on the frontend are now reflected in the backend.
 
 ---
 ---
@@ -601,12 +592,6 @@ $ git push origin master
 ```
 
 #### Deploy Code
-
-![Back4app Containers Select Repository](https://i.ibb.co/8mPVmBw/back4app-caas-select-repository.png)
-
-![Back4app Configure CaaS](https://i.ibb.co/zRV1tyr/back4app-caas-configuration.png)
-
-Back4app CaaS
 
 ## Conclusion
 
