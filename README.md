@@ -51,7 +51,7 @@ Let's start off with the backend.
 
 #### Create Back4app App
 
-To create an app, first navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps), and click "Build new app":
+To create a Back4app app, first navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps), and click "Build new app".
 
 ![Back4app Build New App](https://i.ibb.co/DbWrJ9y/back4app-build-new-app.png)
 
@@ -63,6 +63,8 @@ Name your application, select "PostgreSQL" as the database, and click "Create".
 
 ![Back4app App Configuration](https://i.ibb.co/c8cys2y/back4app-app-configuration.png)
 
+> At the moment there's not much of a difference between the two database types from the developer's point of view. Parse SDK can be used for both of them, and the same methods can be leveraged.
+
 Back4app will take a little while to prepare everything required for your application. That includes the database, application layer, auto-scaling, auto-backup, and security settings.
 
 As soon as your app is ready, you'll be redirected to your real-time database view.
@@ -73,11 +75,13 @@ As soon as your app is ready, you'll be redirected to your real-time database vi
 
 Moving along, let's design the database.
 
-Since our app is fairly simple, we'll only need one class -- let's call it `Expense`. To create a new database class click "Create a class", name it `Expense`, and enable "Public Read and Write".
+Since our app is fairly simple, we'll only need one class. Let's call it `Expense`. 
+
+To create a new database class click on the "Create a class" button, name it `Expense`, and enable "Public Read and Write".
 
 ![Back4app Create New Class](https://i.ibb.co/JdBTz5L/back4app-create-database-class.png)
 
-> Enabling "Public Read and Write" is usually not good practice, since it allows anyone to perform CRUD operations on your classes. Security is out of scope of this article, but it might be a good idea to review [Parse Server Security](https://blog.back4app.com/parse-server-security/).
+> Enabling "Public Read and Write" is bad practice, since it allows anyone to perform CRUD operations on your classes. Security is out of scope of this article, but it might be a good idea to review [Parse Server Security](https://blog.back4app.com/parse-server-security/).
 
 By default database classes come with the following four fields:
 
@@ -97,7 +101,7 @@ By default database classes come with the following four fields:
 
 Take a quick look at them, since we'll use them when building the frontend.
 
-Next, add the following three additional fields to the `Expense` class:
+Next, add the following additional fields to the `Expense` class:
 
 ```
 +-----------+-------------+--------------------+----------+
@@ -115,17 +119,17 @@ After that populate the database with some sample data. Create a few items by pr
 
 ![Back4app Database Populated](https://i.ibb.co/qpfpFR3/back4app-test-data.png)
 
-The test data will allow us to test our backend and frontend later in the article.
+The test data will later allow us to test the backend and frontend.
 
 #### Cloud Code
 
-Cloud Code allows your backend to execute custom JavaScript functions on the server-side. The functions can be scheduled as jobs, or invoked by Parse or HTTP requests. Since they're operated within a managed environment, that eliminates the necessity to handle and scale your own servers.
+Back4app allows you to execute custom JavaScript code via Cloud Code functions. The functions can be scheduled as jobs, or invoked by Parse or HTTP requests. Since they're operated within a managed environment, that eliminates the necessity to handle and scale your own servers.
 
 > To learn more about Functions as a Service (FaaS) check out [What are Serverless functions?](https://blog.back4app.com/what-are-serverless-functions-in-cloud-computing/)
 
-We'll create a Cloud Code function that calculates the expense statistics.
+We'll utilize a Cloud Code function to caclulate the expense statistics.
 
-To create a Cloud Code function, first first select "Cloud Code > Functions & Web Hosting" on the sidebar. Then open *cloud/main.js* and paste in the following code:
+To create one, select "Cloud Code > Functions & Web Hosting" on the sidebar. Then open *cloud/main.js* and paste in the following code:
 
 ```js
 // cloud/main.js
@@ -151,15 +155,12 @@ Parse.Cloud.define("getStatistics", async (request) => {
 });
 ```
 
-1. Code defines a new Cloud Code function named `getStatistics`.
-2. The function aggregates the data and calculates the statistics.
+1. This code defines a new Cloud Code function named `getStatistics`.
+2. The function aggregates the data and calculates `totalSpent` and `spentPercentage`.
 
 Lastly, click "Deploy" to deploy the function to the cloud.
 
----
----
----
-
+Our backend is now more or less complete. That was easy!
 
 ### Frontend
 
@@ -184,6 +185,8 @@ Creating a new Next.js app in /back4app-postgres.
 
 > In case you've never used the `create-next-app` utility it'll automatically get installed.
 
+> Instead of using a component library we'll utilize [TailwindCSS](https://tailwindcss.com/).
+
 Next, clean up the bootstrapped project by performing the following:
 
 1. Delete the contents of the *public/* folder.
@@ -206,7 +209,7 @@ Next, clean up the bootstrapped project by performing the following:
     }
     ```
 
-Lastly, open the terminal and start the development server:
+Lastly, start the development server:
 
 ```sh
 $ next dev
@@ -218,7 +221,7 @@ Open your favorite web browser and navigate to [http://localhost:3000/](http://l
 
 The frontend will have the following endpoints:
 
-1. `/` displays all the expenses and expense statistics
+1. `/` displays the table of expenses and expense statistics
 2. `/add/` displays a form for adding a new expense
 3. `/delete/<objectId>/` displays a confirmation for deleting an expense
 
@@ -260,7 +263,7 @@ export default Container;
 
 And do the same for *Header.js*:
 
-```js
+```jsx
 // src/app/components/Header.js
 
 import Container from "@/app/components/Container";
@@ -285,9 +288,9 @@ const Header = () => {
 export default Header;
 ```
 
-We'll utilize *Container.js* and *Header.js* component in *layout.js* like so:
+Make use of *Container.js* and *Header.js* in *layout.js* like so:
 
-```js
+```jsx
 // src/app/layout.js
 
 "use client";
@@ -313,13 +316,19 @@ export default function RootLayout({ children }) {
 }
 ```
 
-Finally, paste in the code into:
+Finally, paste the view code into the files accordingly:
 
 1. [*src/app/page.js*](https://github.com/duplxey/back4app-postgres/blob/parseless/src/app/page.js)
 2. [*src/app/add/page.js*](https://github.com/duplxey/back4app-postgres/blob/parseless/src/app/add/page.js)
 3. [*src/app/delete/[objectId]/page.js*](https://github.com/duplxey/back4app-postgres/blob/parseless/src/app/delete/%5BobjectId%5D/page.js)
 
+Rerun the development server and visit [http://localhost:3000](http://localhost:3000) in your browser. You should see something similar to this:
+
 ![Back4app App Postgress](https://i.ibb.co/C09Ydkz/back4app-postgress-app.png)
+
+---
+---
+---
 
 #### Parse SDK
 
