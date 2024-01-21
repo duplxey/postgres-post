@@ -357,8 +357,8 @@ import Parse from "parse/dist/parse";
 import ParseContext from "@/app/context/parseContext";
 
 Parse.initialize(
-  process.env.NEXT_PUBLIC_PARSE_APPLICATION_ID,
-  process.env.NEXT_PUBLIC_PARSE_JAVASCRIPT_KEY,
+  "<your_parse_application_id>",
+  "<your_parse_javascript_key>",
 );
 Parse.serverURL = "https://parseapi.back4app.com/";
 
@@ -374,15 +374,6 @@ export default function RootLayout({ children }) {
 ```
 
 ![Back4app API Keys](https://i.ibb.co/vZ8LzCs/back4app-api-keys.png)
-
-Create *.env.local* file in the project root:
-
-```dotenv
-NEXT_PUBLIC_PARSE_APPLICATION_ID=<your_parse_application_id>
-NEXT_PUBLIC_PARSE_JAVASCRIPT_KEY=<your_parse_javascript_key>
-```
-
-Variables prefixed with `NEXT_PUBLIC_` will be accessible by the client.
 
 Slightly modify the views:
 
@@ -582,16 +573,48 @@ Access http://localhost:3000 in your web browser. Your app should be up and runn
 
 > Terminate the container by pressing CTRL + c on your keyboard.
 
-#### Push to VCS
+### Push to VCS
 
-```
+Go ahead and login into your GitHub account. Once you're logged in use the "more button" to start the repository creation process.
+
+![GitHub Index Create Repository](https://i.ibb.co/9hc7LbH/github-index.png)
+
+Pick an appropriate name, leave everything else as default, and click "Create repository".
+
+![GitHub Create Repository](https://i.ibb.co/Sx8TnCk/github-create-repository.png)
+
+Next, take note of the generated remote URL:
+
+![GitHub Remote URL](https://i.ibb.co/r4qnFN9/github-remote-cli.png)
+
+Let's navigate back to our project and push the code.
+
+First, open the terminal and initialize the local Git repository:
+
+```sh
 $ git init
-$ git add .
-$ git commit -m "source code"
+```
+
+Next, add the remote, VCS all the files, and create a new commit:
+
+```sh
+$ git remote add origin <your_remote_url>
+$ git add . && git commit -m "init"
+```
+
+> Make sure to replace `<your_remote_url>` with your GitHub remote URL.
+
+Lastly, push the code to the cloud:
+
+```sh
 $ git push origin master
 ```
 
+If you open your GitHub repository in the browser again you should be able to see the source code.
+
 #### Deploy Code
+
+...
 
 ## Conclusion
 
