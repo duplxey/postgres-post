@@ -2,21 +2,65 @@
 
 ![Back4app Postgres Cover](https://i.ibb.co/n7bLQ6j/back4app-postgres-cover.png)
 
-In this article, you'll learn how to deploy a Postgres-backed application to Back4app.
+PostgreSQL is an advanced enterprise-ready database with many use cases. It is currently the second most popular SQL database, right after MySQL.
+
+In this article, we delve into the essence of PostgreSQL, explore the distinctions between SQL and NoSQL databases, and provide you with step-by-step guide on deploying a web app backed by PostgreSQL.
 
 ## What is PostgreSQL?
 
-...
+PostgreSQL is a free and open-source object-relational database that supports SQL as well as JSON. It has been initially released in 1996, therefore it's considered a mature, robust, and secure relational database management system (RDBMS).
+
+Postgres can be used as a general-purpose transaction database, geospatial database, dynamic web application database, federated database, and more. Compared to other popular databases such as MySQL, it supports table inheritance, user-defined types, async replication, and multi-version concurrency control (MVCC).
+
+It is known for it's performance, scalability, extensibility, fault-tolerance, and [ACID-compliance](https://en.wikipedia.org/wiki/ACID).
+
+The RDBMS is supported on most major operating systems including Windows, Linux, and macOS. Additionally, it supports most popular programming languages including Java, Python, C, Go, Perl, and JavaScript.
 
 ## Relational vs NoSQL databases
 
-...
+Generally speaking, we can split databases into two categories based on the data structure:
 
-![Relational databases vs NoSQL databases](https://i.ibb.co/pPVDYb7/back4app-database-types.png)
+- Relational databases (SQL)
+- Non-relational databases (NoSQL)
 
----
----
----
+![Relational databases and NoSQL databases](https://i.ibb.co/pPVDYb7/back4app-database-types.png)
+
+### Relational databases (SQL)
+
+Relational databases use SQL, or Structured Query Language. SQL is a domain-specific language used for data querying and manipulation. The language supports simple commands as well as transactions, and embedded procedures, such as stored functions or views.
+
+SQL databases are based on predefined schemas. They're composed of tables, which have a set of columns, each having their own data type. They usually have ACID properties:
+
+- Atomicity
+- Consistency
+- Isolation
+- Durability
+
+SQL databases have been widely used since the 1970s. 
+
+Most popular SQL databases are [MySQL](https://www.mysql.com/), [PostgreSQL](https://www.postgresql.org/), [SQLite](https://www.sqlite.org/index.html), and [Oracle Database](https://www.oracle.com/database/).
+
+### Non-relational databases (NoSQL)
+
+Non-relational databases, or Non SQL databases do not follow a strict schema. They're perfect for storing big amounts of unstructured or dynamic data, most commonly JSON. 
+
+There are multiple types of NoSQL databases including:
+
+- Document databases
+- Key-value databases
+- Graph databases
+
+In the recent years NoSQL databases are becoming more and more popular due to large amounts of unstructured data.
+
+Most used NoSQL databases include [Redis](https://redis.io/), [Cassandra](https://cassandra.apache.org/_/index.html), [MongoDB](https://www.mongodb.com/), and [AWS DynamoDB](https://aws.amazon.com/dynamodb/).
+
+### Which is better SQL or NoSQL?
+
+The choice between SQL or NoSQL database depends on your data. If you're dealing with huge amounts of unstructured data definitely go with NoSQL, on the other hand, if your data is mostly structured SQL is a better idea.
+
+Another thing you should consider is scaling. While SQL databases can generally only scale vertically, NoSQL databases are built to scale horizontally as well.
+
+Some web frameworks only support SQL databases, while others only support NoSQL.
 
 ## How to deploy a Postgres-backed web app to Back4app?
 
@@ -619,18 +663,14 @@ After a few moments, your app will be available at the URL on the sidebar.
 
 ![Back4app Successful Deployment](https://i.ibb.co/grX0FZZ/back4app-successful-deployment.png)
 
----
----
----
-
 ## Conclusion
 
-...
+In this article, you've learned what PostgreSQL is, the differences between SQL and NoSQL databases, and how to deploy a Postgres-backed web application to Back4app.
 
-### Future ideas
+To test your understanding, I suggest you implement some of these ideas:
 
-- Implement User authentication
-- Each user should have their own budget
-- Custom domain
+- Implement user authentication
+- Instead of having a global budget, make it user based
+- Add a custom domain to Back4app Containers app
 
 Get the final source code from [back4app-postgres](https://github.com/duplxey/back4app-postgres) repo.
