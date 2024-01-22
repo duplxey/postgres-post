@@ -2,23 +2,23 @@
 
 ![Back4app Postgres Cover](https://i.ibb.co/n7bLQ6j/back4app-postgres-cover.png)
 
-PostgreSQL is an advanced enterprise-ready database with many use cases. It is currently the second most popular SQL database, right after MySQL.
+PostgreSQL is an advanced enterprise-ready relational database management system with many use cases. It is currently the second most popular SQL database, right after MySQL.
 
-In this article, we delve into the essence of PostgreSQL, explore the distinctions between SQL and NoSQL databases, and provide you with step-by-step guide on deploying a web app backed by PostgreSQL.
+In this article, we delve into the essence of PostgreSQL, explore the distinctions between SQL and NoSQL databases, and provide a step-by-step guide on deploying a web app backed by PostgreSQL.
 
 ## What is PostgreSQL?
 
-PostgreSQL is a free and open-source object-relational database that supports SQL as well as JSON. It has been initially released in 1996, therefore it's considered a mature, robust, and secure relational database management system (RDBMS).
+PostgreSQL is a free and open-source object-relational database that supports SQL and JSON. It was initially released in 1996, so it's considered a mature, robust, and secure relational database management system (RDBMS).
 
 Postgres can be used as a general-purpose transaction database, geospatial database, dynamic web application database, federated database, and more. Compared to other popular databases such as MySQL, it supports table inheritance, user-defined types, async replication, and multi-version concurrency control (MVCC).
 
-It is known for it's performance, scalability, extensibility, fault-tolerance, and [ACID-compliance](https://en.wikipedia.org/wiki/ACID).
+It is known for its performance, scalability, extensibility, fault tolerance, and [ACID-compliance](https://en.wikipedia.org/wiki/ACID).
 
-The RDBMS is supported on most major operating systems including Windows, Linux, and macOS. Additionally, it supports most popular programming languages including Java, Python, C, Go, Perl, and JavaScript.
+The RDBMS is supported on most major operating systems, including Windows, Linux, and macOS. Additionally, it supports most popular programming languages such as Java, Python, C, Go, Perl, and JavaScript.
 
-## Relational vs NoSQL databases
+## SQL vs NoSQL databases
 
-Generally speaking, we can split databases into two categories based on the data structure:
+Databases can be split into two categories based on their data structure:
 
 - Relational databases (SQL)
 - Non-relational databases (NoSQL)
@@ -27,9 +27,9 @@ Generally speaking, we can split databases into two categories based on the data
 
 ### Relational databases (SQL)
 
-Relational databases use SQL, or Structured Query Language. SQL is a domain-specific language used for data querying and manipulation. The language supports simple commands as well as transactions, and embedded procedures, such as stored functions or views.
+Relational databases use SQL or Structured Query Language. SQL is a domain-specific language used for data querying and manipulation. The language supports simple commands, transactions, and embedded procedures, such as stored functions or views.
 
-SQL databases are based on predefined schemas. They're composed of tables, which have a set of columns, each having their own data type. They usually have ACID properties:
+SQL databases are based on predefined schemas. They're composed of tables with a set of columns, each having its own data type. They usually have ACID properties:
 
 - Atomicity
 - Consistency
@@ -42,25 +42,25 @@ Most popular SQL databases are [MySQL](https://www.mysql.com/), [PostgreSQL](htt
 
 ### Non-relational databases (NoSQL)
 
-Non-relational databases, or Non SQL databases do not follow a strict schema. They're perfect for storing big amounts of unstructured or dynamic data, most commonly JSON. 
+Non-relational databases, or Non-SQL databases, do not follow a strict schema. They're perfect for storing enormous amounts of unstructured or dynamic data, most commonly JSON. 
 
-There are multiple types of NoSQL databases including:
+There are multiple types of NoSQL databases, including:
 
 - Document databases
 - Key-value databases
 - Graph databases
 
-In the recent years NoSQL databases are becoming more and more popular due to large amounts of unstructured data.
+In recent years, NoSQL databases have become increasingly popular due to the availability of large amounts of unstructured data.
 
 Most used NoSQL databases include [Redis](https://redis.io/), [Cassandra](https://cassandra.apache.org/_/index.html), [MongoDB](https://www.mongodb.com/), and [AWS DynamoDB](https://aws.amazon.com/dynamodb/).
 
 ### Which is better SQL or NoSQL?
 
-The choice between SQL or NoSQL database depends on your data. If you're dealing with huge amounts of unstructured data definitely go with NoSQL, on the other hand, if your data is mostly structured SQL is a better idea.
+The choice between SQL and NoSQL databases depends on your use case and data. If you're dealing with huge amounts of unstructured data, definitely go with NoSQL. On the other hand, if your data is mostly structured, SQL is a better choice.
 
-Another thing you should consider is scaling. While SQL databases can generally only scale vertically, NoSQL databases are built to scale horizontally as well.
+Another two factors you should consider are performance and scaling. NoSQL databases tend to be faster than SQL databases. SQL databases can only scale vertically, while NoSQL databases can scale horizontally.
 
-Some web frameworks only support SQL databases, while others only support NoSQL.
+Finally, some web frameworks only support SQL databases, while others only support NoSQL.
 
 ## How to deploy a Postgres-backed web app to Back4app?
 
@@ -77,7 +77,7 @@ In this article section, you'll learn how to deploy a [Postgres-backed](https://
 
 Before diving into the deployment process, let's briefly discuss what solutions Back4app offers.
 
-1. [**Back4app (BaaS)**](https://www.back4app.com/) is a fully-fledged backend solution. It includes user management, authentication, real-time databases (NoSQL/PostgreSQL), custom code execution, auto-generated APIs, SDKs, push notifications, and more.
+1. [**Back4app (BaaS)**](https://www.back4app.com/) is a fully-fledged backend solution. It includes user management, authentication, real-time databases (NoSQL or PostgreSQL), custom code execution, auto-generated APIs, SDKs, push notifications, and more.
 2. [**Back4app Containers (CaaS)**](https://www.back4app.com/container-as-a-service-caas) is a Docker-powered container management and deployment platform. It allows you to spin up Docker containers in a few clicks!
 6. [**Back4app AI-agent**](https://www.back4app.com/agent) is a brand new AI-powered agent. It allows you to perform all cloud-related tasks with the power of conversation. The agent integrates tightly with the other two Back4app solutions.
 
@@ -130,17 +130,17 @@ To create a new database class, click "Create a class", name it `Expense`, and e
 By default, database classes come with the following four fields:
 
 ```
-+-----------+-------------------------------------------------------------------------+
-| Name      | Explanation                                                             |
-+-----------+-------------------------------------------------------------------------+
-| objectId  | Object's unique identifier                                              |
-+-----------+-------------------------------------------------------------------------+
-| updatedAt | Date time of the object's last update.                                  |
-+-----------+-------------------------------------------------------------------------+
-| createdAt | Date time of object's creation.                                         |
-+-----------+-------------------------------------------------------------------------+
-| ACLs      | Allow you to control the access to the object (e.g. read, update).       |
-+-----------+-------------------------------------------------------------------------+
++-----------+------------------------------------------------------------------------+
+| Name      | Explanation                                                            |
++-----------+------------------------------------------------------------------------+
+| objectId  | Object's unique identifier                                             |
++-----------+------------------------------------------------------------------------+
+| updatedAt | Date time of the object's last update.                                 |
++-----------+------------------------------------------------------------------------+
+| createdAt | Date time of object's creation.                                        |
++-----------+------------------------------------------------------------------------+
+| ACLs      | Allow you to control the access to the object (e.g. read, update).     |
++-----------+------------------------------------------------------------------------+
 ```
 
 Take a quick look at them since we'll use them when building the frontend.
@@ -159,7 +159,9 @@ Next, add the following fields to the `Expense` class:
 +-----------+-------------+--------------------+----------+
 ```
 
-After that, populate the database with some sample data. Create a few items by providing the names, descriptions, and prices. Alternatively, you can import this [data dump](https://github.com/duplxey/back4app-postgres/blob/master/export/Expense.json).
+After that, populate the database with some sample data. 
+
+Create a few items by providing the names, descriptions, and prices. Alternatively, you can import this [data dump](https://github.com/duplxey/back4app-postgres/blob/master/export/Expense.json).
 
 ![Back4app Database Populated](https://i.ibb.co/qCJJzLX/back4app-populate-database.png)
 
@@ -370,7 +372,11 @@ Rerun the development server and visit [http://localhost:3000](http://localhost:
 
 ![Back4app App Postgress](https://i.ibb.co/hYmfbcY/back4app-postgress-app.png)
 
-Clicking on the "Add expense" button should redirect you to the form.
+Clicking on the "Add expense" button should redirect you to the expense add form.
+
+---
+---
+---
 
 #### Parse SDK
 
