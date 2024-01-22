@@ -589,11 +589,15 @@ To deploy your code to Back4app Containers you have to push it to GitHub. To do 
    
 Open your favorite web browser and make sure all the code was added to the repository.
 
+---
+---
+---
+
 #### Deploy Code
 
-Now that our project is dockerized and pushed to GitHub we can finally deploy it to Back4app Containers.
+Now that the app is dockerized and hosted on GitHub we can finally deploy it.
 
-Start off by navigating to your Back4app dashboard. Click "Build new app":
+Navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps) and click on the "Build new app" button once again.
 
 ![Back4app Build New App](https://i.ibb.co/FDYy5P0/back4app-create-app.png)
 
@@ -601,21 +605,27 @@ Select "Containers as a Service" since we're deploying a dockerized application.
 
 ![Back4app Containers as a Service](https://i.ibb.co/bRHFWqw/back4app-containers-as-a-service.png)
 
-If you haven't already connect your GitHub account to Back4app. Then select the repository from the previous step:
+If it's your first time working with Back4app Containers you'll have to link your GitHub to your Back4app account. When picking what repositories Back4app has access to make sure to allow access to the repository created in the previous step.
+
+Next, "Select" the repository.
 
 ![Back4app Select Repository](https://i.ibb.co/hcC1yzB/back4app-select-repository.png)
 
-Back4app allows you to configure the deployment. It allows you to specify the port, health check, environmental variables, et cetera. 
+Back4app Containers allow you to configure deployment settings such as: port, auto-deploy, environmental variables, and health checks.
 
-Nevertheless, our application is simple, so all we have to do is provide the name:
+Since our app is simple we just need to provide a name and can keep everything else as default.
 
 ![Back4app Configure Deployment](https://i.ibb.co/cx63hGC/back4app-configure-repository.png)
 
-As you click "Create App", Back4app will pull the code from GitHub, build the Docker image, push it to their container registry, and lastly deploy it.
+As you click "Create App", Back4app will pull the code from GitHub, build the Docker image, push it to the container registry, and lastly deploy it.
 
 After a few moments, your app will be available at the URL specified on the sidebar.
 
 ![Back4app Successful Deployment](https://i.ibb.co/grX0FZZ/back4app-successful-deployment.png)
+
+---
+---
+---
 
 ## Conclusion
 
