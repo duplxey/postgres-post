@@ -326,11 +326,9 @@ Rerun the development server and visit [http://localhost:3000](http://localhost:
 
 ![Back4app App Postgress](https://i.ibb.co/hYmfbcY/back4app-postgress-app.png)
 
----
----
----
-
 #### Parse SDK
+
+The easiest way to connect to a Back4app-based backend is via Parse SDK. This toolkit comes packed with handy tools for tasks like querying and managing data, running Cloud Code functions, and more. It is available for many programming languages and frameworks such as JavaScript, PHP, Flutter, and Objective-C.
 
 Start by installing Parse via npm:
 
@@ -338,7 +336,9 @@ Start by installing Parse via npm:
 $ npm install parse
 ```
 
-Next, create *parseContext.js* in the *src/app/context* folder:
+To use Parse in our views, we first have to initialize it. But before doing that, we'll create a React context, which will allow us to pass the Parse instance to all our views.
+
+Create a *context* folder in the *src/app* folder, and a *parseContext.js* file in it:
 
 ```jsx
 import {createContext} from "react";
@@ -348,7 +348,7 @@ const ParseContext = createContext();
 export default ParseContext;
 ```
 
-Wrap the entire app using `ParseContext.Provider` like so:
+Then initialize Parse in *layout.js* and wrap the entire app with `ParseContext.Provider` like so:
 
 ```jsx
 // src/app/layout.js
@@ -373,9 +373,13 @@ export default function RootLayout({ children }) {
 }
 ```
 
-![Back4app API Keys](https://i.ibb.co/vZ8LzCs/back4app-api-keys.png)
+> Make sure to replace `<your_parse_application_id>` and `<your_parse_javascript_key>` with your actual keys. To obtain them, navigate to your Back4app dashboard, and select "App Settings > Security & Keys" on the sidebar.
+> 
+> ![Back4app API Keys](https://i.ibb.co/vZ8LzCs/back4app-api-keys.png)
 
-Slightly modify the views:
+Then slightly modify the views to invoke Parse methods.
+
+*src/app/page.js*:
 
 ```jsx
 // src/app/page.js
@@ -414,9 +418,9 @@ export default function Page() {
 
   // ...
 }
-
 ```
 
+*src/app/add/page.js*:
 
 ```jsx
 // src/app/add/page.js
@@ -452,6 +456,8 @@ export default function Page() {
 }
 
 ```
+
+*src/app/delete/[objectId]/page.js*:
 
 ```jsx
 // src/app/delete/[objectId]/page.js
@@ -495,15 +501,11 @@ Great, that's it.
 
 Your frontend is now connected to the backend. If you visit the app in your browser you should see that the data gets loaded correctly from the backend. All the changes on the frontend are now reflected in the backend.
 
----
----
----
+#### Dockerize
 
-#### Dockerization
+Since Back4app Containers is a CaaS platform, your project has to be dockerized before it can be deployed. The recommended way of dockerizing your project is via a *Dockerfile* -- a blueprint script providing instructions to create a Docker container image.
 
-To facilitate deployment on Back4app Containers, the initial step involves dockerizing your application. Dockerization is the practice of encapsulating code within a container, making it deployable across various environments. The recommended approach for dockerizing an application is by employing a Dockerfile.
-
-The Dockerfile script provides instructions for crafting a Docker container image. It serves as a blueprint to specify the environment, install dependencies, and execute necessary commands for building and running the application. Create a Dockerfile in the project root with the following specifications:
+Create a *Dockerfile* in the project root:
 
 ```dockerfile
 # Dockerfile
@@ -525,12 +527,9 @@ EXPOSE 3000
 CMD ["next", "start", "-p", "3000"]
 ```
 
-This Dockerfile utilizes the node:18-alpine image, establishes the working directory, manages dependencies, copies the project, and builds the application. Upon completion, it exposes port 3000 and launches a Next.js server to listen on that port.
+This Dockerfile utilizes the [`node:18-alpine`](https://hub.docker.com/_/node/tags) image, establishes the working directory, manages dependencies, copies over the project, and builds the application. Upon completion, it exposes port `3000` and launches a Next.js server to listen on that port.
 
-
-Minimizing the Docker image size is crucial. Achieve this by creating a .dockerignore file, specifying files and folders to exclude from the final image. For instance, exclude IDE files, build, .git, and node_modules. Here's a sample .dockerignore file:
-
-*.dockerignore*
+Next, create a *.dockerignore* file to minimize the image's size:
 
 ```
 # .dockerignore
@@ -545,81 +544,75 @@ build/
 .vercel
 ```
 
-Build, Run, Test
+> *.dockerignore* files, work in a similar way as *.gitignore* files.
 
-Prior to cloud deployment, locally test your Docker project. Install Docker Desktop for seamless testing. Once installed, build your image:
+Make sure everything works by building and running the image locally:
 
 ```
 $ docker build -t back4app-postgres:1.0 .
-```
-
-List the images to verify successful creation:
-
-```
 $ docker run -it -p 3000:3000 back4app-postgres:1.0
 ```
 
-```
-$ docker images
+Open your web browser and navigate to [http://localhost:3000](http://localhost:3000). The application should still be connected to the backend and work the same way.
 
-REPOSITORY          TAG       IMAGE ID         CREATED            SIZE
-back4app-postgres   1.0       d361534a68da     2 minutes ago      1.08GB
-```
+#### Push to VCS
 
+To deploy your code to Back4app Containers you first have to push it to GitHub. To do that, perform the following:
 
-[http://localhost:3000/](http://localhost:3000/)
+1. Log into your [GitHub account](https://github.com/login).
+2. Create a new [repository](https://github.com/new).
+3. Copy the remote origin URL -- e.g. `git@github.com:duplxey/repo.git`.
+4. Open the terminal and execute the following commands:
+   ```
+   $ git init
+   $ git remote add origin <your_remote_origin_url>
+   $ git add . && git commit -m "project init"
+   $ git push origin main
+    ```
+   The commands will initialize a new Git repository, add the remote, commit all the code, and push it to the main branch.
+   
+Open your favorite web browser and make sure all the code was added to the repository.
 
-Access http://localhost:3000 in your web browser. Your app should be up and running!
-
-> Terminate the container by pressing CTRL + c on your keyboard.
-
-### Push to VCS
-
-Go ahead and login into your GitHub account. Once you're logged in use the "more button" to start the repository creation process.
-
-![GitHub Index Create Repository](https://i.ibb.co/9hc7LbH/github-index.png)
-
-Pick an appropriate name, leave everything else as default, and click "Create repository".
-
-![GitHub Create Repository](https://i.ibb.co/Sx8TnCk/github-create-repository.png)
-
-Next, take note of the generated remote URL:
-
-![GitHub Remote URL](https://i.ibb.co/r4qnFN9/github-remote-cli.png)
-
-Let's navigate back to our project and push the code.
-
-First, open the terminal and initialize the local Git repository:
-
-```sh
-$ git init
-```
-
-Next, add the remote, VCS all the files, and create a new commit:
-
-```sh
-$ git remote add origin <your_remote_url>
-$ git add . && git commit -m "init"
-```
-
-> Make sure to replace `<your_remote_url>` with your GitHub remote URL.
-
-Lastly, push the code to the cloud:
-
-```sh
-$ git push origin master
-```
-
-If you open your GitHub repository in the browser again you should be able to see the source code.
+---
+---
+---
 
 #### Deploy Code
 
-...
+Now that our project is dockerized and pushed to GitHub we can finally deploy it to Back4app Containers.
+
+Start off by navigating to your Back4app dashboard. Click "Build new app":
+
+![Back4app Build New App](https://i.ibb.co/FDYy5P0/back4app-create-app.png)
+
+Select "Containers as a Service" since we're deploying a dockerized application.
+
+![Back4app Containers as a Service](https://i.ibb.co/bRHFWqw/back4app-containers-as-a-service.png)
+
+If you haven't already connect your GitHub account to Back4app. Then select the repository from the previous step:
+
+![Back4app Select Repository](https://i.ibb.co/hcC1yzB/back4app-select-repository.png)
+
+Back4app allows you to configure the deployment. It allows you to specify the port, health check, environmental variables, et cetera. 
+
+Nevertheless, our application is simple, so all we have to do is provide the name:
+
+![Back4app Configure Deployment](https://i.ibb.co/cx63hGC/back4app-configure-repository.png)
+
+As you click "Create App", Back4app will pull the code from GitHub, build the Docker image, push it to their container registry, and lastly deploy it.
+
+After a few moments, your app will be available at the URL specified on the sidebar.
+
+![Back4app Successful Deployment](https://i.ibb.co/grX0FZZ/back4app-successful-deployment.png)
 
 ## Conclusion
+
+...
 
 ### Future ideas
 
 - Implement User authentication
 - Each user should have their own budget
-- 
+- Custom domain
+
+Get the final source code from [back4app-postgres](https://github.com/duplxey/back4app-postgres) repo.
