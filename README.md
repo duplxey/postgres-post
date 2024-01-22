@@ -43,7 +43,7 @@ Throughout the article, we'll be using Back4app BaaS and Back4app Containers. Ne
 
 We'll be building a simple budget-tracking web application. The web app will allow users to add expenses, remove them, and calculate different statistics (e.g. amount spent, budget percentage).
 
-The app will be split into the backend and the frontend. The backend will be built with Back4app (backed by PostgreSQL), and the frontend will be built with React (using Next.js). We'll connect the two using [Parse SDK](https://parseplatform.org/) and, lastly, deploy the frontend to Back4app Containers.
+The app will be split into the backend and the frontend. The backend will be built with Back4app (backed by PostgreSQL), and the frontend will be built with React (using Next.js). We'll connect the two using [Parse SDK](https://parseplatform.org/) and deploy the frontend to Back4app Containers.
 
 ### Backend
 
@@ -51,7 +51,7 @@ Let's start off with the backend.
 
 #### Create Back4app App
 
-To create a Back4app app, first navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps), and click "Build new app".
+To create a Back4app app, first navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps) and click "Build new app".
 
 ![Back4app Build New App](https://i.ibb.co/FDYy5P0/back4app-create-app.png)
 
@@ -63,7 +63,7 @@ Give your application a descriptive name, select "PostgreSQL" as the database, a
 
 ![Back4app App Configuration](https://i.ibb.co/DDZm3Xx/back4app-app-configuration.png)
 
-> At the moment there's not much of a difference between the two database types from the developer's point of view. The same Parse SDK methods apply to both of them.
+> At the time of writing, there's not much difference between the two database types from the developer's point of view. The same Parse SDK methods apply to both of them.
 
 Back4app will take a little while to prepare everything required for your application. That includes the database, application layer, auto-scaling, auto-backup, and security settings.
 
@@ -75,15 +75,15 @@ As soon as your app is ready, you'll be redirected to the app's real-time databa
 
 Moving along, let's design the database.
 
-Since our app is fairly simple, we'll only need one class. Let's call it `Expense`. 
+Since our app is relatively simple, we'll only need one class. Let's call it `Expense`. 
 
-To create a new database class click "Create a class", name it `Expense`, and ensure "Public Read and Write enabled" is checked.
+To create a new database class, click "Create a class", name it `Expense`, and ensure "Public Read and Write enabled" is checked.
 
 ![Back4app Create New Class](https://i.ibb.co/qmxGgj4/back4app-create-database-class.png)
 
-> Enabling public read and write is considered bad practice, since it allows anyone to perform CRUD operations on your classes. Security is out of scope of this article, but it might be a good idea to review [Parse Server Security](https://blog.back4app.com/parse-server-security/).
+> Enabling public read and write is considered bad practice since it allows anyone to perform CRUD operations on your classes. Security is out of the scope of this article. Still, it might be a good idea to review [Parse Server Security](https://blog.back4app.com/parse-server-security/).
 
-By default database classes come with the following four fields:
+By default, database classes come with the following four fields:
 
 ```
 +-----------+-------------------------------------------------------------------------+
@@ -95,11 +95,11 @@ By default database classes come with the following four fields:
 +-----------+-------------------------------------------------------------------------+
 | createdAt | Date time of object's creation.                                         |
 +-----------+-------------------------------------------------------------------------+
-| ACLs      | Allow you to control the access to the object (eg. read, update).       |
+| ACLs      | Allow you to control the access to the object (e.g. read, update).       |
 +-----------+-------------------------------------------------------------------------+
 ```
 
-Take a quick look at them, since we'll use them when building the frontend.
+Take a quick look at them since we'll use them when building the frontend.
 
 Next, add the following fields to the `Expense` class:
 
@@ -115,7 +115,7 @@ Next, add the following fields to the `Expense` class:
 +-----------+-------------+--------------------+----------+
 ```
 
-After that populate the database with some sample data. Create a few items by providing the names, descriptions, and prices. Alternatively, you can import this [data dump](https://github.com/duplxey/back4app-postgres/blob/master/export/Expense.json).
+After that, populate the database with some sample data. Create a few items by providing the names, descriptions, and prices. Alternatively, you can import this [data dump](https://github.com/duplxey/back4app-postgres/blob/master/export/Expense.json).
 
 ![Back4app Database Populated](https://i.ibb.co/qCJJzLX/back4app-populate-database.png)
 
@@ -123,11 +123,11 @@ The test data will later allow us to test the backend and frontend.
 
 #### Cloud Code
 
-Back4app allows you to execute custom JavaScript code via Cloud Code functions. The functions can be scheduled as jobs, or invoked by Parse or HTTP requests. Since they're operated within a managed environment, that eliminates the necessity to handle and scale your own servers.
+Back4app allows you to execute custom JavaScript code via Cloud Code functions. The functions can be scheduled as jobs or invoked by Parse or HTTP requests. Since they're operated within a managed environment, that eliminates the necessity to handle and scale your own servers.
 
-> To learn more about Functions as a Service (FaaS) check out [What are Serverless functions?](https://blog.back4app.com/what-are-serverless-functions-in-cloud-computing/)
+> To learn more about Functions as a Service (FaaS), check out [What are Serverless functions?](https://blog.back4app.com/what-are-serverless-functions-in-cloud-computing/)
 
-We'll utilize a Cloud Code function to caclulate the expense statistics.
+We'll utilize a Cloud Code function to calculate the expense statistics.
 
 To create one, select "Cloud Code > Functions & Web Hosting" on the sidebar. Then open *cloud/main.js* and paste in the following code:
 
@@ -168,7 +168,7 @@ In this article section, we'll implement the app's frontend.
 
 #### Create Next App
 
-The easiest way to bootstrap a Next.js app is via [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app) utility. To use it open the terminal and run the following command: 
+The easiest way to bootstrap a Next.js app is via [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app) utility. To use it, open the terminal and run the following command: 
 
 ```sh
 $ npx create-next-app@latest back4app-postgres
@@ -183,9 +183,9 @@ $ npx create-next-app@latest back4app-postgres
 Creating a new Next.js app in /back4app-postgres.
 ```
 
-> In case you've never used the `create-next-app` utility it'll automatically get installed.
+> If you've never used the `create-next-app` utility, it'll automatically get installed.
 
-Ensure to enable [TailwindCSS](https://tailwindcss.com/), since we'll use it instead of a component library.
+Ensure you enable [TailwindCSS](https://tailwindcss.com/) since we'll use it instead of a component library.
 
 Next, clean up the bootstrapped project by performing the following:
 
@@ -215,7 +215,7 @@ Start the development server:
 $ next dev
 ```
 
-Open your favorite web browser and navigate to [http://localhost:3000/](http://localhost:3000/). If everything goes well you should see the "Back4app rocks!" message.
+Open your favorite web browser and navigate to [http://localhost:3000/](http://localhost:3000/). You should see the "Back4app rocks!" message if everything goes well.
 
 #### Views
 
@@ -225,7 +225,7 @@ The frontend will have the following endpoints:
 2. `/add/` displays a form for adding a new expense
 3. `/delete/<objectId>/` displays a confirmation for deleting an expense
 
-To implement these endpoints create the following directory structure:
+To implement these endpoints, create the following directory structure:
 
 ```
 src/
@@ -330,15 +330,15 @@ Clicking on the "Add expense" button should redirect you to the form.
 
 #### Parse SDK
 
-There's multiple ways to connect to a Back4app backend:
+There are multiple ways to connect to a Back4app backend:
 
 1. RESTful API
 2. GraphQL API
 3. Parse SDK
 
-We'll go with the latter since it's the most robust and easiest to setup.
+We'll go with the latter since it's the most robust and straightforward setup.
 
-Parse SDK is a toolkit that comes packed with handy tools for querying data, managing it, running Cloud Code functions, and more. It is available for many programming languages and frameworks such as JavaScript, PHP, Flutter, and Objective-C.
+Parse SDK is a toolkit packed with handy tools for querying data, managing it, running Cloud Code functions, and more. It is available for many programming languages and frameworks, such as JavaScript, PHP, Flutter, and Objective-C.
 
 Start by installing Parse via npm:
 
@@ -346,7 +346,7 @@ Start by installing Parse via npm:
 $ npm install parse
 ```
 
-To use Parse in our React views, we first have to initialize it. But before doing that, we'll create a React context, which will allow us to pass the Parse instance to all our views.
+To use Parse in our React views, we first have to initialize it. But before doing that, we'll create a React context, allowing us to pass the Parse instance to all our views.
 
 Create a *context* folder in the *src/app* folder, and a *parseContext.js* file in it:
 
@@ -383,7 +383,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-> Make sure to replace `<your_parse_application_id>` and `<your_parse_javascript_key>` with your actual keys. To obtain them, navigate to your Back4app dashboard, and select "App Settings > Security & Keys" on the sidebar.
+> Make sure to replace `<your_parse_application_id>` and `<your_parse_javascript_key>` with your actual keys. To obtain them, navigate to your Back4app dashboard and select "App Settings > Security & Keys" on the sidebar.
 > 
 > ![Back4app API Keys](https://i.ibb.co/vZ8LzCs/back4app-api-keys.png)
 
@@ -393,7 +393,7 @@ We can now obtain the `Parse` instance in our views like so:
 const parse = useContext(ParseContext);
 ```
 
-Then slightly modify the views to invoke Parse methods.
+Then, slightly modify the views to invoke Parse methods.
 
 *src/app/page.js*:
 
@@ -515,11 +515,11 @@ import ParseContext from "@/app/context/parseContext";
 
 Great, that's it.
 
-Your frontend is now connected to the backend. If you visit the app in your browser you should see that the data gets loaded correctly from the backend. All the changes on the frontend are now reflected in the backend.
+Your frontend is now connected to the backend. If you visit the app in your browser, you should see that the data gets loaded correctly from the backend. All the changes on the frontend are now reflected in the backend.
 
 #### Dockerize
 
-Since Back4app Containers is a CaaS platform, your project has to be dockerized before it can be deployed. The recommended way of dockerizing your project is via a Dockerfile. A Dockerfile is a blueprint script providing instructions to create a Docker container image.
+Since Back4app Containers is a CaaS platform, your project must be dockerized before deployment. The recommended way of dockerizing your project is via a Dockerfile. A Dockerfile is a blueprint script providing instructions to create a container image.
 
 Create a *Dockerfile* in the project root:
 
@@ -573,7 +573,7 @@ Open your web browser and navigate to [http://localhost:3000](http://localhost:3
 
 #### Push to VCS
 
-To deploy your code to Back4app Containers you have to push it to GitHub. To do that, perform the following:
+To deploy your code to Back4app Containers, you must push it to GitHub. To do that, perform the following:
 
 1. Log into your [GitHub account](https://github.com/login).
 2. Create a new [repository](https://github.com/new).
@@ -587,15 +587,11 @@ To deploy your code to Back4app Containers you have to push it to GitHub. To do 
     ```
    The commands will initialize a new Git repository, add the remote, commit all the code, and push it to the main branch.
    
-Open your favorite web browser and make sure all the code was added to the repository.
-
----
----
----
+Open your favorite web browser and ensure all the code is added to the repository.
 
 #### Deploy Code
 
-Now that the app is dockerized and hosted on GitHub we can finally deploy it.
+Now that the app is dockerized and hosted on GitHub, we can finally deploy it.
 
 Navigate to your [Back4app dashboard](https://dashboard.back4app.com/apps) and click on the "Build new app" button once again.
 
@@ -605,21 +601,21 @@ Select "Containers as a Service" since we're deploying a dockerized application.
 
 ![Back4app Containers as a Service](https://i.ibb.co/bRHFWqw/back4app-containers-as-a-service.png)
 
-If it's your first time working with Back4app Containers you'll have to link your GitHub to your Back4app account. When picking what repositories Back4app has access to make sure to allow access to the repository created in the previous step.
+If it's your first time working with Back4app Containers, you must link your GitHub to your Back4app account. When picking what repositories Back4app has access to, make sure to allow access to the repository created in the previous step.
 
 Next, "Select" the repository.
 
 ![Back4app Select Repository](https://i.ibb.co/hcC1yzB/back4app-select-repository.png)
 
-Back4app Containers allow you to configure deployment settings such as: port, auto-deploy, environmental variables, and health checks.
+Back4app Containers allow you to configure deployment settings such as port, auto-deploy, environmental variables, and health checks.
 
-Since our app is simple we just need to provide a name and can keep everything else as default.
+Since our app is simple, we need to provide a name and can keep everything else as default.
 
 ![Back4app Configure Deployment](https://i.ibb.co/cx63hGC/back4app-configure-repository.png)
 
-As you click "Create App", Back4app will pull the code from GitHub, build the Docker image, push it to the container registry, and lastly deploy it.
+As you click "Create App", Back4app will pull the code from GitHub, build the Docker image, push it to the container registry, and deploy it.
 
-After a few moments, your app will be available at the URL specified on the sidebar.
+After a few moments, your app will be available at the URL on the sidebar.
 
 ![Back4app Successful Deployment](https://i.ibb.co/grX0FZZ/back4app-successful-deployment.png)
 
