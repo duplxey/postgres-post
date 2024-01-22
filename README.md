@@ -573,10 +573,6 @@ To deploy your code to Back4app Containers you first have to push it to GitHub. 
    
 Open your favorite web browser and make sure all the code was added to the repository.
 
----
----
----
-
 #### Deploy Code
 
 Now that our project is dockerized and pushed to GitHub we can finally deploy it to Back4app Containers.
